@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <!-- <script src="https://res.wx.qq.com/open/js/jweixin-1.6.0.js"></script> -->
+    <script async>
+        const appId = 'wx4f0ce74252ce1b65'
+        // 从url中获取code和state
+        function getCodeAndState() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const code = urlParams.get('code');
+            const state = urlParams.get('state');
+            console.log(code, state);
+            return {
+                code,
+                state
+            }
+        }
+        // getCodeAndState();
+        async function init() {
+            //首先判断是否有openid
+            let openid = localStorage.getItem('openid');
+            if (openid) {
+                return;
+            }
+            const { code, state } = getCodeAndState();
+            if (code && state) {
+                const res = await fetch("http://localhost:5312/api/get-openid?code=" + code);
+                const data = await res.json();
+                console.log('openid:', data.openid);
+                localStorage.setItem('openid', data.openid);
+                // access_token: "67_HPGE0nwXIbblrx3OUFGj8hVvQUc5JWSNTaKavPglTDwPyvXl_YKJySgiioVWvZhO5p2oqJ9ksmCALmRZTCBgM-EPyLaAlJfLzzE1thDMCb0"
+                // expires_in: 7200
+                // openid: "oFH9V6rADU10i_Bt5RZ1iqSeKlKs"
+                // refresh_token: "67_MR086dlitAqnVlfRfqw6j2fxJ71e_pqcUHddooPx8BWiTZevvxn6FH4Dbht575oFHovOSndxWVVeDgRv8ZzfnybgkM424uUZ_fxoT8I46go"
+                // scope: "snsapi_base"
+            } else {
+                redirect();
+            }
+        }
+        init();
+
+        function redirect() {
+            const REDIRECT_URI = encodeURIComponent("https://nat.youyi.asia/");
+            const url = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${appId}&redirect_uri=${REDIRECT_URI}&response_type=code&scope=snsapi_base&state=12331#wechat_redirect`
+            window.location.href = url;
+        }
+
+    </script>
+</body>
+
+</html>

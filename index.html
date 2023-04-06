@@ -23,7 +23,11 @@
                 state
             }
         }
-        // getCodeAndState();
+        function redirect() {
+            const REDIRECT_URI = encodeURIComponent("https://nat.youyi.asia/");
+            const url = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${appId}&redirect_uri=${REDIRECT_URI}&response_type=code&scope=snsapi_base&state=12331#wechat_redirect`
+            window.location.href = url;
+        }
         async function init() {
             //首先判断是否有openid
             let openid = localStorage.getItem('openid');
@@ -36,10 +40,10 @@
                 const data = await res.json();
                 console.log('openid:', data.openid);
                 localStorage.setItem('openid', data.openid);
-                // access_token: "67_HPGE0nwXIbblrx3OUFGj8hVvQUc5JWSNTaKavPglTDwPyvXl_YKJySgiioVWvZhO5p2oqJ9ksmCALmRZTCBgM-EPyLaAlJfLzzE1thDMCb0"
+                // access_token: "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx-EPyLaAlJfLzzE1thDMCb0"
                 // expires_in: 7200
-                // openid: "oFH9V6rADU10i_Bt5RZ1iqSeKlKs"
-                // refresh_token: "67_MR086dlitAqnVlfRfqw6j2fxJ71e_pqcUHddooPx8BWiTZevvxn6FH4Dbht575oFHovOSndxWVVeDgRv8ZzfnybgkM424uUZ_fxoT8I46go"
+                // openid: "xxxxxxxxxxxxxxxxxxxxxxxxxx"
+                // refresh_token: "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
                 // scope: "snsapi_base"
             } else {
                 redirect();
@@ -47,11 +51,7 @@
         }
         init();
 
-        function redirect() {
-            const REDIRECT_URI = encodeURIComponent("https://nat.youyi.asia/");
-            const url = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${appId}&redirect_uri=${REDIRECT_URI}&response_type=code&scope=snsapi_base&state=12331#wechat_redirect`
-            window.location.href = url;
-        }
+
 
     </script>
 </body>
